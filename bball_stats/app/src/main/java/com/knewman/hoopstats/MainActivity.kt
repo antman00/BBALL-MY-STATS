@@ -239,6 +239,16 @@ class MainActivity : Activity() {
             confirm("Close this game? Unsaved changes will be lost.") { endSession() }
         }.weighted())
         content.addView(actions)
+        if (activeGameId != null) {
+            content.addView(button("Delete Game", RED) {
+                confirm("Delete this saved game? This can't be undone.") {
+                    store.games.removeAll { it.id == activeGameId }
+                    store.save()
+                    toast("Game deleted")
+                    endSession()
+                }
+            }.topMargin(10))
+        }
         refreshScore()
     }
 
